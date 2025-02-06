@@ -1,3 +1,4 @@
+
 # SimpleBinaryPatcher
 
 **SimpleBinaryPatcher**
@@ -47,7 +48,7 @@ struct HookData {
 HookData hook = { 0x4B04E, makebyte::JMP() };
 bool result = Instance->patch_byte(hook);
 
-constexpr auto instruction_begin = 0x4B05E;	
+constexpr auto instruction_begin = 0x4B05E;	 //offset
 //start address which the instruction will be applied
 
 constexpr auto instruction_end = 0x4B066;
@@ -59,6 +60,15 @@ bool result = Instance->patch_byte(hook);
 ```
 The `patch_byte(HookData& in)` function takes a `HookData` as an argument and overwrites the specified ㅁaddress in the target process with the Payload.
 
-and `patch_byte(HookData& in)` returns the patch result exactly as true or false.
+Change VirtualProtect properties of memory region and **patch** then restores the original protection properties.
 
-`HookData.offset` (the first element) must be the offset. The base address in memory is calculated by initialization.
+
+Payload can be 
+`madebyte:: {instruction name}` or  `vector <BYTE> payload = {0x90, 0x90, 0x90};`
+`vector <BYTE> payload = {MOV, 0xEB, JMP};` ...
+
+and `patch_byte(HookData& in)` returns the patch result, indicates whether the actual memory is manipulated successful.
+
+`HookData.offset (the first element) `  must be the offset. The base address in memory is calculated by initialization. 
+
+ 
